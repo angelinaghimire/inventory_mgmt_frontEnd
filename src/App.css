@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.container {
+  display: flex;
+}
+
+main {
+  width: 100%;
+}
+
+.link {
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+
+.link:hover {
+  background: #19376D;
+  color: #000;
+  transition: all 0.5s;
+}
+
+.active {
+  background: #19376D;
+  color: #000;
+}
+
+.icon,
+.link_text {
+  color: #fff;
+  font-size: 20px;
+}
+
+h1 {
+  padding: 0.5rem;
+}

@@ -1,0 +1,73 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  position: sticky;
+  top: 0px;
+}
+
+.table-wrapper {
+  max-height: 425px;
+  overflow-y: scroll;
+  position: sticky;
+}
+
+thead {
+  position: sticky;
+}
+
+input {
+  margin-bottom: 16px;
+  padding: 8px;
+  width: 200px;
+}
+
+
+button {
+  margin-left: 8px;
+}
+
+#reject {
+  background-color: red;
+}
+
+.button:hover {
+  color: #fff;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+input {
+  margin-bottom: 16px;
+  padding: 8px;
+  width: 200px;
+}
+
+
+.button:hover {
+  color: #fff;
+  background-color: red;
+}
+
+*/
