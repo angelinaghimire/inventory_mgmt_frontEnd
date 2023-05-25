@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "../stylesheets/editUser.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+
 const EditUser = (props) => {
   const data = [
     { id: 1, name: "John", age: 25 },
@@ -47,7 +50,7 @@ const EditUser = (props) => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      <table >
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -63,30 +66,32 @@ const EditUser = (props) => {
               <td>{item.name}</td>
               <td>{item.age}</td>
               <td>
-              {props.type ==="request" && 
-              <>
-              <button
-                  className="button"
-                  onClick={() => handleDelete(item.id)}
-                  >
-                  Accept
-                </button>
-                <button
-                className="button"
-                id="reject"
-                onClick={() => handleDelete(item.id)}
-                >
-                Reject
-              </button>
-                </>
-                }
+                {props.type === "request" && (
+                  <>
+                    <button
+                      className="tick-button"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <FontAwesomeIcon icon={faCheck} />
+                    </button>
+                    <button
+                      className="icon-button"
+                      id="reject"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  </>
+                )}
 
-                {props.type ==="user" && <button
-                  className="button"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>}
+                {props.type === "user" && (
+                  <button
+                    className="icon-button"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                )}
               </td>
             </tr>
           ))}

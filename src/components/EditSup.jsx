@@ -1,13 +1,38 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "../stylesheets/EditSup.css";
-// import "../stylesheets/editUser.css";
+
 const EditSup = (props) => {
   const data = [
-    { id: 1, name: "John", location: "Dhulikhel", phonenumber: 9811122234, email: "abcd@gmail.com" },
-    { id: 2, name: "Jane", location: "Pokhara", phonenumber: 9811152234, email: "abcd@gmail.com" },
-    { id: 3, name: "Bob", location: "Chitwan" , phonenumber: 9811132234, email: "abcd@gmail.com"},
-    { id: 4, name: "Alice", location: "Butwal", phonenumber: 9811102234, email: "abcd@gmail.com" },
-    
+    {
+      id: 1,
+      name: "John",
+      location: "Dhulikhel",
+      phonenumber: 9842222222,
+      email: "abcd@gmail.com",
+    },
+    {
+      id: 2,
+      name: "Jane",
+      location: "Dhulikhel",
+      phonenumber: 9842222222,
+      email: "abcd@gmail.com",
+    },
+    {
+      id: 3,
+      name: "Bob",
+      location: "Dhulikhel",
+      phonenumber: 9842222222,
+      email: "abcd@gmail.com",
+    },
+    {
+      id: 4,
+      name: "Alice",
+      location: "Dhulikhel",
+      phonenumber: 9842222222,
+      email: "abcd@gmail.com",
+    },
   ];
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,7 +68,6 @@ const EditSup = (props) => {
             <th>Phone Number</th>
             <th>Email</th>
             <th>Status</th>
-            {/* <th></th> */}
           </tr>
         </thead>
         <tbody>
@@ -55,19 +79,16 @@ const EditSup = (props) => {
               <td>{item.phonenumber}</td>
               <td>{item.email}</td>
               <td>
-              <button
-                  className="button"
+                <FontAwesomeIcon
+                  className="edit"
+                  icon={faEdit}
                   onClick={() => handleDelete(item.id)}
-                  >
-                  Edit
-                </button>
-                <button
-                className="button"
-                id="reject"
-                onClick={() => handleDelete(item.id)}
-                >
-                Delete
-              </button>
+                />
+                <FontAwesomeIcon
+                  className="trash"
+                  icon={faTrash}
+                  onClick={() => handleDelete(item.id)}
+                />
               </td>
             </tr>
           ))}

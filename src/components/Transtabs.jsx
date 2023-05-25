@@ -3,8 +3,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import SupForm from "./SupForm";
-import EditSup from "./EditSup";
+import Transform from "./Transform";
+import Translist from "./Translist";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -14,13 +14,14 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
+
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      sx={{ padding: "0" }}
+      {...other}
     >
       {value === index && (
         <Box sx={{ padding: "0" }}>
@@ -38,11 +39,13 @@ function a11yProps(index: number) {
   };
 }
 
-export default function SupTabs() {
+export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   return (
     <Box
       sx={{
@@ -50,7 +53,7 @@ export default function SupTabs() {
         flexDirection: "column",
         justifyContent: "center", // Center the content horizontally
         width: "100%",
-        marginTop: "25px",
+        marginTop: "20px",
       }}
     >
       <Box>
@@ -60,15 +63,15 @@ export default function SupTabs() {
           aria-label="basic tabs example"
           centered // Center the tabs horizontally
         >
-          <Tab label="Add Suppliers" {...a11yProps(0)} />
-          <Tab label="Edit Suppliers" {...a11yProps(1)} />
+          <Tab label="Incoming" {...a11yProps(0)} />
+          <Tab label="Outgoing" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <SupForm />
+        <Translist />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <EditSup />
+        <Transform />
       </TabPanel>
     </Box>
   );

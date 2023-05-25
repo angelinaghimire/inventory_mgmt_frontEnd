@@ -18,9 +18,14 @@ th {
 }
 
 .table-wrapper {
-  max-height: 425px;
+  max-height: 400px;
   overflow-y: scroll;
-  position: sticky;
+  overflow-x: hidden;
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  border: solid 3px #637899;
+  margin-bottom: 10px;
 }
 
 thead {
@@ -30,7 +35,6 @@ thead {
 input {
   margin-bottom: 16px;
   padding: 8px;
-  width: 200px;
 }
 
 
@@ -38,36 +42,56 @@ button {
   margin-left: 8px;
 }
 
-#reject {
-  background-color: red;
-}
+/* #reject {
+  background-color: red; */
+/* } */
 
 .button:hover {
   color: #fff;
 }
 
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
+
+.table-wrapper input[type="text"] {
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  border: solid 1px grey;
+  border-radius: 0;
+  /* overflow-x: hidden; */
+  width: 830px;
+  align-self: right;
+  margin-left: 10px;
+  margin-right: 50px;
 }
 
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
+.table-wrapper input[type="text"] :active {
+  border-radius: 0;
 }
 
-input {
-  margin-bottom: 16px;
-  padding: 8px;
-  width: 200px;
+.icon-button {
+  background: red;
+  border: none;
+  cursor: pointer;
+  padding: 3px;
+  margin: 0;
+  color: none;
 }
 
-
-.button:hover {
-  color: #fff;
-  background-color: red;
+.tick-button {
+  background: green;
+  border: none;
+  cursor: pointer;
+  padding: 3px;
+  margin-right: 5px;
+  color: none;
 }
 
-*/
+.icon-button:focus {
+  outline: none;
+}
+
+.icon-button svg {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}

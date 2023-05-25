@@ -1,11 +1,13 @@
-import React from 'react';
-
+import React from "react";
+import Transtabs from "../components/Transtabs";
+import Header from "../components/Header";
 const Transactions = () => {
-    return (
-        <div>
-            <h1>Transactions page</h1>
-        </div>
-    );
+  return (
+    <div>
+<Header />
+      <Transtabs />
+    </div>
+  );
 };
 
 export default Transactions;

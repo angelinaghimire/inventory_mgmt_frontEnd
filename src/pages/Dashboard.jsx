@@ -2,10 +2,12 @@ import React from "react";
 import { FaExclamationCircle } from "react-icons/fa";
 import "../stylesheets/Dashboard.css"
 import { FcShipped, FcBusinessman, FcPackage, FcDatabase } from "react-icons/fc";
+import Header from "../components/Header";
 
 const Dashboard = ({ inventory }) => {
   return (
     <div className="dashboard">
+  <Header />
 
       <div class="alerts">
        <div className="icon1"><FaExclamationCircle color="#F44336" /></div>

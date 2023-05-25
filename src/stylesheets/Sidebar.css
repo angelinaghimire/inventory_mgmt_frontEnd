@@ -13,6 +13,8 @@ main {
   /* set initial widthposition: fixed; */
   transition: width 0.5s;
   /* animate width property */
+  top: 0;
+  left: 0;
 }
 
 .top_section {

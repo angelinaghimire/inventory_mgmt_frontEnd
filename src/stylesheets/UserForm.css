@@ -17,7 +17,6 @@ textarea {
     font-size: 16px;
     border-radius: 5px;
     /* border: 1px solid #ccc; */
-    width: 30rem;
 }
 
 button[type="submit"] {
@@ -27,6 +26,7 @@ button[type="submit"] {
     padding: 0.5rem 1rem;
     border: solid 2px #0B2447;
     border-radius: 0.25rem;
+    margin-bottom: 10px;
 }
 
 button[type="submit"]:hover {

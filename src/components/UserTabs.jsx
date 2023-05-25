@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import EditUser from "./EditUser";
 
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -20,10 +19,9 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ padding: 0 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -44,17 +42,27 @@ export default function SupTabs() {
     setValue(newValue);
   };
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        width: "100%",
+        marginTop: "25px",
+      }}
+    >
+      <Box>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          centered
         >
           <Tab label="Requests" {...a11yProps(0)} />
           <Tab label="Remove User" {...a11yProps(1)} />
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}>
         <EditUser type="request" />
       </TabPanel>

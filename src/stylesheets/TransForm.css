@@ -1,0 +1,73 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 5px 20px;
+  width: 60%;
+  margin: 0 auto;
+  border-top: solid 1.5px rgba(0, 0, 0, 0.8)
+    /* border: solid 3px #637899; */
+    /* Adjust the width and margin properties as needed */
+}
+
+#line {
+  border: none;
+  padding-bottom: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  /* Set the width to 100% to fill the container */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+
+}
+
+input,
+textarea {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+
+  /* Set the width to 100% to fill the form container */
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.submitbtn {
+  /* Adjust the button styling as needed */
+}
+
+.required {
+  color: red;
+}
+
+.error-message {
+  color: red;
+}
+
+.form-container {
+  /* height: 400px; */
+  /* Adjust the height according to your needs */
+  overflow: visible;
+}

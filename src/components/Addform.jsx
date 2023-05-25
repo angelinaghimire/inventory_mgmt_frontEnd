@@ -68,7 +68,7 @@ function AddProductForm() {
         description,
         threshold: threshold || 0,
         category,
-        user_id: 8,
+        user_id: 1,
       });
       console.log(result);
 

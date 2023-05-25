@@ -1,9 +1,12 @@
 import React from "react";
+import UserTabs from "../components/UserTabs";
+import Header from "../components/Header";
 
 const UserControl = () => {
   return (
     <div>
-      <h1>User Control page</h1>
+      <Header />
+      <UserTabs />
     </div>
   );
 };

@@ -1,112 +1,91 @@
-import React, { useState, useEffect } from "react";
-import axios from "../axiosConfig.js";
-import AddProductForm from "./Addform";
-import "../stylesheets/EditProducts.css";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import "../stylesheets/EditSup.css";
 
-function EditProducts() {
-  const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showEditForm, setShowEditForm] = useState(false);
+const EditProducts = (props) => {
+  const data = [
+    {
+      id: 1,
+      category: "Device",
+      name: "Printer",
+      threshold: "1",
+    },
+    {
+      id: 2,
+      category: "Device",
+      name: "Printer",
+      threshold: "1",
+    },
+    {
+      id: 3,
+      category: "Device",
+      name: "ass",
+      threshold: "1",
+    },
+    // ... rest of the data objects
+  ];
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        // Fetch products from the database
-        const response = await axios.get("/api/products");
-        const products = response.data;
-        setProducts(products);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchProducts();
-  }, []);
-  const handleDelete = async (product) => {
-    if (window.confirm(`Are you sure you want to delete ${product.name}?`)) {
-      try {
-        // Delete product from the database
-        await axios.delete(`/api/products/${product.id}`);
-        // Remove product from the list of products
-        setProducts(products.filter((p) => p.id !== product.id));
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState(data);
+
+  const handleSearch = (event) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+    const filteredResults = data.filter((item) =>
+      item.name.toLowerCase().includes(searchValue)
+    );
+    setSearchResults(filteredResults);
   };
 
-  const handleEdit = (product) => {
-    setSelectedProduct(product);
-    setShowEditForm(true);
-  };
-
-  const handleUpdate = async (updatedProduct) => {
-    try {
-      // Update product in the database
-      await axios.put(`/api/products/${updatedProduct.id}`, updatedProduct);
-      // Update product in the list of products
-      setProducts(
-        products.map((product) =>
-          product.id === updatedProduct.id ? updatedProduct : product
-        )
-      );
-    } catch (error) {
-      console.error(error);
-    }
+  const handleDelete = (id) => {
+    const updatedResults = searchResults.filter((item) => item.id !== id);
+    setSearchResults(updatedResults);
   };
 
   return (
     <div className="table-wrapper">
+      <input
+        type="text"
+        placeholder="Search by name"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
       <table>
         <thead>
           <tr>
-            <th>S.N</th>
-            <th>Name</th>
+            <th>ID</th>
             <th>Category</th>
-            <th>Description</th>
+            <th>Name</th>
             <th>Threshold</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            <tr key={product.id} onClick={() => handleEdit(product)}>
-              <td>{index + 1}</td>
-              <td>{product.name}</td>
-              <td>{product.category}</td>
-              <td>{product.description}</td>
-              <td>{product.threshold}</td>
+          {searchResults.map((item) => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.category}</td>
+              <td>{item.name}</td>
+              <td>{item.threshold}</td>
               <td>
-                <button
-                  className="button"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="button"
-                  id="reject"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Delete
-                </button>
+                <FontAwesomeIcon
+                  className="edit"
+                  icon={faEdit}
+                  onClick={() => handleDelete(item.id)}
+                />
+                <FontAwesomeIcon
+                  className="trash"
+                  icon={faTrash}
+                  onClick={() => handleDelete(item.id)}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {showEditForm && (
-        <div className="edit-form">
-          <button onClick={() => setShowEditForm(false)}>❌</button>
-          <AddProductForm
-            product={selectedProduct}
-            onSubmit={handleUpdate}
-            onCancel={() => setShowEditForm(false)}
-          />
-        </div>
-      )}
     </div>
   );
-}
+};
 
 export default EditProducts;

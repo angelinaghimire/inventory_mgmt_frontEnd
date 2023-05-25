@@ -1,9 +1,11 @@
 import React from "react";
-
+import Reporttabs from "../components/Reporttabs";
+import Header from "../components/Header";
 const Report = () => {
   return (
     <div>
-      <h1>Report page</h1>
+      <Header />
+      <Reporttabs />
     </div>
   );
 };
