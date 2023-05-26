@@ -1,32 +1,46 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import axios from "../axiosConfig";
 import CurrencyInput from "react-currency-input-field";
 import "../stylesheets/TransForm.css";
+import Cookies from "js-cookie";
 
 function Translist() {
+  const user_id = Cookies.get("userId");
   const [productname, setProductName] = useState("");
+  const [productId, setProductId] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [purchasedate, setPurchaseDate] = useState("");
   const [expirydate, setExpiryDate] = useState("");
   const [supplier, setSupplier] = useState("");
+  const [supplier_id, setSupplierId] = useState("");
   const [remarks, setRemarks] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrors, setShowErrors] = useState(false);
+  const [productOptions, setProductOptions] = useState([]);
+  const [supplierOptions, setSupplierOptions] = useState([]);
 
-  const productOptions = [
-    { value: "product1", label: "Product 1" },
-    { value: "product2", label: "Product 2" },
-    { value: "product3", label: "Product 3" },
-    // Add more product options as needed
-  ];
+  useEffect(() => {
+    axios
+      .get(`/api/product/`)
+      .then((response) => {
+        // console.log(response.data);
+        setProductOptions(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-  const supplierOptions = [
-    { value: "supplier1", label: "Supplier 1" },
-    { value: "supplier2", label: "Supplier 2" },
-    { value: "supplier3", label: "Supplier 3" },
-    // Add more supplier options as needed
-  ];
+    axios
+      .get("/api/suppliers/")
+      .then((response) => {
+        // console.log(response.data);
+        setSupplierOptions(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,27 +52,20 @@ function Translist() {
     }
 
     try {
-      // Check if supplier already exists in the database
-      const response = await axios.get(
-        `/api/intransactions?productid=${productname}`
-      );
-      const supplier = response.data;
-      if (supplier) {
-        setErrorMessage("Supplier already exists in the database.");
-        return;
-      }
-
-      // Submit supplier to the database
-      await axios.post("/api/transactions", {
-        productname,
-        quantity,
-        price,
-        purchasedate,
-        expirydate,
-        supplier,
-        remarks,
+      // Submit transaction to the database
+      const total_price = quantity * price;
+      const transaction = await axios.post("/api/intransaction", {
+        user_id: user_id,
+        supplier_id,
+        date: purchasedate,
+        remark: remarks,
+        quantity: quantity,
+        product_id: productId,
+        unit_price: price,
+        total_price: total_price,
+        expiry_date: expirydate,
       });
-
+      alert("Transaction Added Successfully");
       // Reset form fields
       setProductName("");
       setQuantity("");
@@ -67,12 +74,8 @@ function Translist() {
       setExpiryDate("");
       setSupplier("");
       setRemarks("");
-
-      // Show success message
-      alert(" successfully added to the database.");
     } catch (error) {
       console.error(error);
-      setErrorMessage("Failed to add supplier to the database.");
     }
   };
 
@@ -86,13 +89,17 @@ function Translist() {
           <select
             className="shadow"
             value={productname}
-            onChange={(event) => setProductName(event.target.value)}
+            onChange={(event) => {
+              setProductName(event.target.value);
+              console.log(event.target.value.split(":")[0]);
+              setProductId(event.target.value.split(":")[0]);
+            }}
             required
           >
             <option value="">Select Product</option>
             {productOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
+              <option key={option.id} value={option.id}>
+                {option.id + ":" + option.name}
               </option>
             ))}
           </select>
@@ -110,7 +117,11 @@ function Translist() {
             maxLength={8}
             prefix="Rs. "
             allowNegativeValue={false}
-            onChange={(value) => setPrice(value)}
+            onChange={(event) => {
+              const temprice = event.target.value.replace(/,/g, "");
+              // console.log(temprice.split(" ")[1]);
+              setPrice(temprice.split(" ")[1]);
+            }}
             required
           />
         </div>
@@ -152,12 +163,15 @@ function Translist() {
           <select
             className="shadow"
             value={supplier}
-            onChange={(event) => setSupplier(event.target.value)}
+            onChange={(event) => {
+              setSupplier(event.target.value);
+              setSupplierId(event.target.value.split(":")[0]);
+            }}
           >
             <option value="">Select Supplier</option>
             {supplierOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
+              <option key={option.id} value={option.id}>
+                {option.id + ":" + option.name}
               </option>
             ))}
           </select>
