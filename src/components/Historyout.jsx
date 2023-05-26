@@ -1,8 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../stylesheets/History.css";
+import axios from "../axiosConfig.js";
 
 const Historyout = (props) => {
-  const data = [
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function fetchdata() {
+      await axios
+        .get("/api/outtransaction")
+        .then((response) => {
+          const datas = response.data.outtransactions[0];
+          setData(datas);
+          console.log("this is from above ", datas);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    fetchdata();
+  }, []);
+
+  const nodata = [
     {
       id: 1,
       productname: "Pencil",
@@ -95,21 +113,21 @@ const Historyout = (props) => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Product Name</th>
+            <th>User ID</th>
+            <th>Product ID</th>
             <th>Quantity</th>
             <th>Supplied Date</th>
-            <th>Receiver</th>
+            <th>Receiver ID</th>
           </tr>
         </thead>
         <tbody>
-          {searchResults.map((item) => (
+          {data.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
-              <td>{item.productname}</td>
+              <td>{item.product_id}</td>
               <td>{item.quantity}</td>
               <td>{item.date}</td>
-              <td>{item.receiver}</td>
+              <td>{item.receiver_id}</td>
             </tr>
           ))}
         </tbody>

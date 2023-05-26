@@ -1,89 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../stylesheets/History.css";
+import axios from "../axiosConfig.js";
 
 const Historyin = (props) => {
-  const data = [
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Pencil",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-    {
-      id: 1,
-      productname: "Eraser",
-      quantity: 45,
-      price: 200,
-      date: "05 / 06 / 2022",
-      supplier: "Saraswati Traders",
-    },
-  ];
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function fetchdata() {
+      await axios
+        .get("/api/intransaction")
+        .then((response) => {
+          const datas = response.data.intransactions[0];
+          setData(datas);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    fetchdata();
+  }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(data);
@@ -112,23 +46,23 @@ const Historyin = (props) => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Product Name</th>
+            <th>User ID</th>
+            <th>Product ID</th>
             <th>Quantity</th>
             <th>Total Price</th>
             <th>Received Date</th>
-            <th>Supplier</th>
+            <th>Supplier ID</th>
           </tr>
         </thead>
         <tbody>
-          {searchResults.map((item) => (
+          {data.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
-              <td>{item.productname}</td>
-              <td>{item.price}</td>
+              <td>{item.product_id}</td>
               <td>{item.quantity}</td>
+              <td>{item.total_price}</td>
               <td>{item.date}</td>
-              <td>{item.supplier}</td>
+              <td>{item.supplier_id}</td>
             </tr>
           ))}
         </tbody>
