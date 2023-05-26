@@ -4,7 +4,7 @@ import Header from "../components/Header";
 const Transactions = () => {
   return (
     <div>
-<Header />
+      <Header />
       <Transtabs />
     </div>
   );

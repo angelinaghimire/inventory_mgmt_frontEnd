@@ -1,27 +1,29 @@
-
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard'
-import Report from '../pages/Report.jsx';
-import Receivers from '../pages/Receivers.jsx';
-import Suppliers from '../pages/Suppliers.jsx';
-import Products from '../pages/Products.jsx';
-import Transactions from '../pages/Transactions.jsx';
-import UserControl from '../pages/UserControl.jsx';
-import Settings from '../pages/Settings.jsx';
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import Dashboard from "../pages/Dashboard";
+import Report from "../pages/Report.jsx";
+import Receivers from "../pages/Receivers.jsx";
+import Suppliers from "../pages/Suppliers.jsx";
+import Products from "../pages/Products.jsx";
+import Transactions from "../pages/Transactions.jsx";
+import UserControl from "../pages/UserControl.jsx";
+import Settings from "../pages/Settings.jsx";
 
 // Import the Login and Register components
-import Login from '../pages/Login';
-import Register from '../pages/Register';
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
-const AppRoutes = ({ isLoggedIn, setIsLoggedIn }) => {
- 
+const AppRoutes = ({ isLoggedIn, setIsLoggedIn, userId, setUserId }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (!isLoggedIn && location.pathname !== '/login' && location.pathname !== '/register') {
-      navigate('/login');
+    if (
+      !isLoggedIn &&
+      location.pathname !== "/login" &&
+      location.pathname !== "/register"
+    ) {
+      navigate("/login");
     }
   }, [isLoggedIn, navigate, location]);
 

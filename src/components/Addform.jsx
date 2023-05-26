@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "../axiosConfig.js";
 import Select from "react-select";
 import "../stylesheets/AddForm.css";
+import Cookies from "js-cookie";
+
 
 function AddProductForm({onCancel}) {
+function AddProductForm() {
+  const userId = Cookies.get("userId");
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [threshold, setThreshold] = useState("");
@@ -47,7 +52,6 @@ function AddProductForm({onCancel}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage("");
-
     if (!name || !category) {
       setShowErrors(true);
       return;
@@ -68,7 +72,7 @@ function AddProductForm({onCancel}) {
         description,
         threshold: threshold || 0,
         category,
-        user_id: 1,
+        user_id: userId,
       });
       console.log(result);
 

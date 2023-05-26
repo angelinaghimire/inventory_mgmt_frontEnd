@@ -1,41 +1,43 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import CurrencyInput from "react-currency-input-field";
+import axios from "../axiosConfig";
 import "../stylesheets/TransForm.css";
+import Cookies from "js-cookie";
 
 function Transform() {
+  const user_id = Cookies.get("userId");
   const [productNameOptions, setProductNameOptions] = useState([]);
-  const [selectedProductName, setSelectedProductName] = useState("");
+  const [productId, setProductId] = useState("");
+  const [selectedProductName, setSelectedProductName] = useState([]);
   const [quantity, setQuantity] = useState("");
   const [supplieddate, setSuppliedDate] = useState("");
   const [receiverOptions, setReceiverOptions] = useState([]);
+  const [receiverId, setReceiverId] = useState();
   const [selectedReceiver, setSelectedReceiver] = useState("");
   const [remarks, setRemarks] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
-    fetchProductNameOptions();
-    fetchReceiverOptions();
+    axios
+      .get(`/api/product/`)
+      .then((response) => {
+        setProductNameOptions(response.data);
+        console.log("checking data from here ", productNameOptions);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    axios
+      .get("/api/receivers/")
+      .then((response) => {
+        console.log(response.data);
+        setReceiverOptions(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
-
-  const fetchProductNameOptions = async () => {
-    try {
-      const response = await axios.get("/api/productNames");
-      setProductNameOptions(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchReceiverOptions = async () => {
-    try {
-      const response = await axios.get("/api/receivers");
-      setReceiverOptions(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,23 +49,14 @@ function Transform() {
     }
 
     try {
-      // Check if receiver already exists in the database
-      const response = await axios.get(
-        `/api/intransactions?receiver=${selectedReceiver}`
-      );
-      const existingReceiver = response.data;
-      if (existingReceiver) {
-        setErrorMessage("Receiver already exists in the database.");
-        return;
-      }
-
       // Submit transaction to the database
-      await axios.post("/api/outtransactions", {
-        productName: selectedProductName,
-        quantity,
-        supplieddate,
-        receiver: selectedReceiver,
-        remarks,
+      await axios.post("/api/outtransaction", {
+        user_id: user_id,
+        receiver_id: receiverId,
+        date: supplieddate,
+        remark: remarks,
+        quantity: quantity,
+        product_id: productId,
       });
 
       // Reset form fields
@@ -91,13 +84,17 @@ function Transform() {
           <select
             className="shadow"
             value={selectedProductName}
-            onChange={(event) => setSelectedProductName(event.target.value)}
+            onChange={(event) => {
+              setSelectedProductName(event.target.value);
+              console.log(event.target.value.split(":")[0]);
+              setProductId(event.target.value.split(":")[0]);
+            }}
             required
           >
-            <option value="">Select a product</option>
-            {productNameOptions.map((productName) => (
-              <option key={productName} value={productName}>
-                {productName}
+            <option value="">Select product</option>
+            {productNameOptions.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.id + ":" + option.name}
               </option>
             ))}
           </select>
@@ -131,12 +128,16 @@ function Transform() {
           <select
             className="shadow"
             value={selectedReceiver}
-            onChange={(event) => setSelectedReceiver(event.target.value)}
+            onChange={(event) => {
+              setSelectedReceiver(event.target.value);
+              console.log(event.target.value.split(":")[0]);
+              setReceiverId(event.target.value.split(":")[0]);
+            }}
           >
             <option value="">Select a receiver</option>
-            {receiverOptions.map((receiver) => (
-              <option key={receiver} value={receiver}>
-                {receiver}
+            {receiverOptions.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.id + ":" + option.name}
               </option>
             ))}
           </select>

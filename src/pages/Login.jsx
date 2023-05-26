@@ -1,33 +1,63 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import "../stylesheets/authpage.css"
 
-const Login = ({ setIsLoggedIn }) => {
-    const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+
+
+
+import axios from "../axiosConfig.js";
+import Cookies from "js-cookie";
+
+
+const Login = ({ setIsLoggedIn, userId, setUserId }) => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Send a request to the backend to authenticate the user
-    // const response = await axios.post('/api/authenticate', { username, password });
-    // Store the JWT in local storage or a cookie
-    // localStorage.setItem('token', response.data.token);
-
-    // Set isLoggedIn to true
-    console.log('Setting isLoggedIn to true');
-  setIsLoggedIn(true);
-
-  console.log('logged in');
-  navigate('/');
+    try {
+      // console.log(userId);
+      const response = await axios.post("/api/login", { username, password });
+      console.log(response);
+      if (response.status === 200) {
+        console.log("logged in");
+        Cookies.set("userId", response.data.id);
+        setIsLoggedIn(true);
+        console.log("this is now set", Cookies.get("userId"));
+        navigate("/");
+        return;
+      }
+    } catch (err) {
+      console.log(err);
+      if (err.response.status == 404) {
+        alert("User not found!");
+        return;
+      } else if (err.response.status == 401) {
+        alert("Incorrect password!");
+        return;
+      } else if (err.response.status == 500) {
+        alert("Server error!");
+        return;
+      } else {
+        alert("Unknown error!");
+        return;
+      }
+    }
   };
-
   return (
     <div>
+
         <Header />
       <h1 className='hd'>Login</h1>
+
+      <Header />
+      <h1>Login</h1>
+
       <form onSubmit={handleSubmit}>
         <label>
           Username:

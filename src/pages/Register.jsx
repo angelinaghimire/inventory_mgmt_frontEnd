@@ -1,29 +1,33 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "../axiosConfig.js";
 import Header from "../components/Header";
 import "../stylesheets/authpage.css"
 
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      alert("Passwords do not match!");
       return;
     }
     // Send a request to the backend to register the user
-    // const response = await axios.post('/api/register', { username, password });
-    // Store the JWT in local storage or a cookie
-    // localStorage.setItem('token', response.data.token);
+    const response = await axios.post("/api/users", { username, password });
+    console.log(response);
+    if (response.status === 201) {
+      alert("User successfully registered!");
+      // Redirect to login page
+      window.location.href = "/login";
+    }
   };
 
   return (
     <div>
-  <Header />
+      <Header />
 
       <h1 className='hd'>Register</h1>
       <form onSubmit={handleSubmit}>

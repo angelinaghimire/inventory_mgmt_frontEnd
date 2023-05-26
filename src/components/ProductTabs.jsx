@@ -6,9 +6,7 @@ import Box from "@mui/material/Box";
 import AddForm from "./Addform";
 import EditProducts from "./EditProducts";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+function TabPanel({ children, value, index, ...other }) {
   return (
     <div
       role="tabpanel"
