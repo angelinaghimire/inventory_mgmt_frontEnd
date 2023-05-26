@@ -55,12 +55,15 @@ const EditProducts = (props) => {
 
   return (
     <div className="table-wrapper">
-      <input
-        type="text"
-        placeholder="Search by name"
-        value={searchTerm}
-        onChange={handleSearch}
-      />
+      {!editingItemId && (
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      )}
+
       {editingItemId !== null ? (
         <AddProductForm
           initialData={searchResults.find((item) => item.id === editingItemId)}

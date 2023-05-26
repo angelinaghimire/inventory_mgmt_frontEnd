@@ -2,13 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "../axiosConfig.js";
 import Select from "react-select";
 import "../stylesheets/AddForm.css";
-import Cookies from "js-cookie";
 
-
-function AddProductForm({onCancel}) {
-function AddProductForm() {
-  const userId = Cookies.get("userId");
-
+function AddProductForm({ onCancel }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [threshold, setThreshold] = useState("");
@@ -52,6 +47,7 @@ function AddProductForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage("");
+
     if (!name || !category) {
       setShowErrors(true);
       return;
@@ -72,7 +68,7 @@ function AddProductForm() {
         description,
         threshold: threshold || 0,
         category,
-        user_id: userId,
+        user_id: 8,
       });
       console.log(result);
 
@@ -146,18 +142,16 @@ function AddProductForm() {
           <Select
             value={{ value: category, label: category }}
             onChange={handleCategoryChange}
-            className="shadow"
+            className="options"
             options={[
               { value: "add_category", label: "Add Category" },
               ...categoryOptions,
             ]}
-            className="options"
             required
           />
         ) : (
           <div className="new-category-input">
             <input
-              className="shadow"
               type="text"
               value={newCategoryInput}
               onChange={(event) => setNewCategoryInput(event.target.value)}

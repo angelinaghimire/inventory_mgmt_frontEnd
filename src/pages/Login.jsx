@@ -1,16 +1,11 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import "../stylesheets/authpage.css"
-
-
-
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import "../stylesheets/authpage.css";
 
 import axios from "../axiosConfig.js";
 import Cookies from "js-cookie";
-
 
 const Login = ({ setIsLoggedIn, userId, setUserId }) => {
   const navigate = useNavigate();
@@ -51,39 +46,36 @@ const Login = ({ setIsLoggedIn, userId, setUserId }) => {
   };
   return (
     <div>
-
-        <Header />
-      <h1 className='hd'>Login</h1>
-
       <Header />
-      <h1>Login</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
-      <p className='link-btn'>
-      <Link to="/register">Don't have an account? Register here.</Link>
-      </p>
+      <div className="login-container">
+        <h1 className="hd login-title">Login</h1>
+
+        <form onSubmit={handleSubmit}>
+          <label>
+            Username
+            <input
+              type="text"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <p className="link-btn register-instead">
+          <Link to="/register">Don't have an account? Register here.</Link>
+        </p>
+      </div>
     </div>
   );
 };
