@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "../axiosConfig.js";
 import "../stylesheets/SupForm.css";
 
-function RecForm({ receiver }) {
+function RecForm({ receiver, onCancel }) {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -112,9 +112,16 @@ function RecForm({ receiver }) {
           onChange={(event) => setEmail(event.target.value)}
         />
       </div>
-      <button type="submit" className="submitbtn">
-        Submit
-      </button>
+      <div className="button-container">
+        <button type="submit" className="submitbtn">
+          {onCancel ? "Update" : "Submit"}
+        </button>
+        {onCancel && (
+          <button type="button" className="cancelbtn" onClick={onCancel}>
+            Cancel
+          </button>
+        )}
+      </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </form>
   );

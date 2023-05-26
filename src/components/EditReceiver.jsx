@@ -57,17 +57,16 @@ const EditReceiver = () => {
     setSearchResults(updatedResults);
   };
 
+  const handleCancel = () => {
+    setSelectedReceiver(null);
+  };
+
   return (
     <div className="edit-receiver-container">
       {selectedReceiver ? (
-        <div className="edit-form">
-          <RecForm receiver={selectedReceiver} />
-          <button type="button" className="cancel-btn" onClick={() => setSelectedReceiver(null)}>
-            Cancel
-          </button>
-        </div>
+        <RecForm receiver={selectedReceiver} onCancel={handleCancel} />
       ) : (
-        <div>
+        <div className="table-wrapper">
           <div className="search-bar">
             <input
               type="text"
