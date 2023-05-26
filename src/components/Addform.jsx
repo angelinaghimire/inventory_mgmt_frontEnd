@@ -3,7 +3,7 @@ import axios from "../axiosConfig.js";
 import Select from "react-select";
 import "../stylesheets/AddForm.css";
 
-function AddProductForm() {
+function AddProductForm({onCancel}) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [threshold, setThreshold] = useState("");
@@ -142,7 +142,7 @@ function AddProductForm() {
           <Select
             value={{ value: category, label: category }}
             onChange={handleCategoryChange}
-            class="shadow"
+            className="shadow"
             options={[
               { value: "add_category", label: "Add Category" },
               ...categoryOptions,
@@ -153,7 +153,7 @@ function AddProductForm() {
         ) : (
           <div className="new-category-input">
             <input
-              class="shadow"
+              className="shadow"
               type="text"
               value={newCategoryInput}
               onChange={(event) => setNewCategoryInput(event.target.value)}
@@ -178,7 +178,7 @@ function AddProductForm() {
         <input
           type="text"
           value={name}
-          class="shadow"
+          className="shadow"
           onChange={(event) => setName(event.target.value)}
           required
         />
@@ -198,13 +198,20 @@ function AddProductForm() {
         <input
           type="number"
           value={threshold}
-          class="shadow"
+          className="shadow"
           onChange={(event) => setThreshold(event.target.value)}
         />
       </div>
-      <button type="submit" className="submitbtn">
-        Submit
-      </button>
+      <div className="button-container">
+        <button type="submit" className="submitbtn">
+          Submit
+        </button>
+        {onCancel && (
+          <button type="button" className="cancelbtn" onClick={onCancel}>
+            Cancel
+          </button>
+        )}
+      </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </form>
   );

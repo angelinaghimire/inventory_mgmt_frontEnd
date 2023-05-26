@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "../stylesheets/EditSup.css";
+import AddProductForm from "./Addform";
 
 const EditProducts = (props) => {
   const data = [
@@ -28,6 +29,7 @@ const EditProducts = (props) => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(data);
+  const [editingItemId, setEditingItemId] = useState(null);
 
   const handleSearch = (event) => {
     const searchValue = event.target.value.toLowerCase();
@@ -38,9 +40,17 @@ const EditProducts = (props) => {
     setSearchResults(filteredResults);
   };
 
+  const handleEdit = (id) => {
+    setEditingItemId(id);
+  };
+
   const handleDelete = (id) => {
     const updatedResults = searchResults.filter((item) => item.id !== id);
     setSearchResults(updatedResults);
+  };
+
+  const handleCancel = () => {
+    setEditingItemId(null);
   };
 
   return (
@@ -51,39 +61,46 @@ const EditProducts = (props) => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Category</th>
-            <th>Name</th>
-            <th>Threshold</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {searchResults.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.category}</td>
-              <td>{item.name}</td>
-              <td>{item.threshold}</td>
-              <td>
-                <FontAwesomeIcon
-                  className="edit"
-                  icon={faEdit}
-                  onClick={() => handleDelete(item.id)}
-                />
-                <FontAwesomeIcon
-                  className="trash"
-                  icon={faTrash}
-                  onClick={() => handleDelete(item.id)}
-                />
-              </td>
+      {editingItemId !== null ? (
+        <AddProductForm
+          initialData={searchResults.find((item) => item.id === editingItemId)}
+          onCancel={handleCancel}
+        />
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Category</th>
+              <th>Name</th>
+              <th>Threshold</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {searchResults.map((item) => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.category}</td>
+                <td>{item.name}</td>
+                <td>{item.threshold}</td>
+                <td>
+                  <FontAwesomeIcon
+                    className="edit"
+                    icon={faEdit}
+                    onClick={() => handleEdit(item.id)}
+                  />
+                  <FontAwesomeIcon
+                    className="trash"
+                    icon={faTrash}
+                    onClick={() => handleDelete(item.id)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import "../stylesheets/authpage.css"
 
 const Login = ({ setIsLoggedIn }) => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Login = ({ setIsLoggedIn }) => {
   return (
     <div>
         <Header />
-      <h1>Login</h1>
+      <h1 className='hd'>Login</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -50,8 +51,8 @@ const Login = ({ setIsLoggedIn }) => {
         <br />
         <button type="submit">Login</button>
       </form>
-      <p>
-        Don't have an account? <Link to="/register">Register here.</Link>
+      <p className='link-btn'>
+      <Link to="/register">Don't have an account? Register here.</Link>
       </p>
     </div>
   );

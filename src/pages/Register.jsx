@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from "../components/Header";
+import "../stylesheets/authpage.css"
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -24,7 +25,7 @@ const Register = () => {
     <div>
   <Header />
 
-      <h1>Register</h1>
+      <h1 className='hd'>Register</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -58,8 +59,8 @@ const Register = () => {
         <br />
         <button type="submit">Register</button>
       </form>
-      <p>
-        Already have an account? <Link to="/login">Login here.</Link>
+      <p className='link-btn'>
+      <Link to="/login">Already have an account? Login here.</Link>
       </p>
     </div>
   );

@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../axiosConfig.js";
 import "../stylesheets/SupForm.css";
 
-function SupForm() {
+function SupForm({ editData, handleClose }) {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrors, setShowErrors] = useState(false);
+
+  useEffect(() => {
+    if (editData) {
+      setName(editData.name);
+      setLocation(editData.location);
+      setPhoneNumber(editData.phonenumber);
+      setEmail(editData.email);
+    }
+  }, [editData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,22 +29,33 @@ function SupForm() {
     }
 
     try {
-      // Check if supplier already exists in the database
-      const response = await axios.get(`/api/suppliers/${name}`);
-      const supplier = response.data;
-      console.log(supplier);
-      if (supplier.length > 0) {
-        setErrorMessage("Supplier already exists in the database.");
-        return;
-      }
+      if (editData) {
+        // Update existing supplier in the database
+        await axios.put(`/api/suppliers/${editData.id}`, {
+          name,
+          address: location,
+          phone: phoneNumber,
+          email,
+        });
+        alert("Supplier successfully updated in the database.");
+      } else {
+        // Check if supplier already exists in the database
+        const response = await axios.get(`/api/suppliers/${name}`);
+        const supplier = response.data;
+        if (supplier.length > 0) {
+          setErrorMessage("Supplier already exists in the database.");
+          return;
+        }
 
-      // Submit supplier to the database
-      await axios.post("/api/suppliers", {
-        name,
-        address: location,
-        phone: phoneNumber,
-        email,
-      });
+        // Submit new supplier to the database
+        await axios.post("/api/suppliers", {
+          name,
+          address: location,
+          phone: phoneNumber,
+          email,
+        });
+        alert("Supplier successfully added to the database.");
+      }
 
       // Reset form fields
       setName("");
@@ -43,12 +63,23 @@ function SupForm() {
       setPhoneNumber("");
       setEmail("");
 
-      // Show success message
-      alert("Supplier successfully added to the database.");
+      // Close the form
+      handleClose();
     } catch (error) {
       console.error(error);
-      setErrorMessage("Failed to add supplier to the database.");
+      setErrorMessage("Failed to add/update supplier in the database.");
     }
+  };
+
+  const handleCancel = () => {
+    // Reset form fields
+    setName("");
+    setLocation("");
+    setPhoneNumber("");
+    setEmail("");
+
+    // Close the form
+    handleClose();
   };
 
   return (
@@ -58,7 +89,7 @@ function SupForm() {
           Name<span className="required">*</span>
         </label>
         <input
-          class="shadow"
+          className="shadow"
           type="text"
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -71,7 +102,7 @@ function SupForm() {
       <div className="form-group">
         <label>Location</label>
         <input
-          class="shadow"
+          className="shadow"
           type="text"
           value={location}
           onChange={(event) => setLocation(event.target.value)}
@@ -82,8 +113,9 @@ function SupForm() {
           Phone Number<span className="required">*</span>
         </label>
         <input
-          class="shadow"
-          type="tel"
+          className="shadow no-arrows no"
+          type="number"
+          max="9999999999"
           value={phoneNumber}
           onChange={(event) => setPhoneNumber(event.target.value)}
           required
@@ -97,15 +129,22 @@ function SupForm() {
       <div className="form-group">
         <label>Email</label>
         <input
-          class="shadow"
+          className="shadow"
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
       </div>
-      <button type="submit" className="submitbtn">
-        Submit
-      </button>
+      <div className="button-group">
+        <button type="submit" className="submitbtn">
+          {editData ? "Update" : "Submit"}
+        </button>
+        {editData && (
+          <button type="button" className="cancelbtn" onClick={handleCancel}>
+            Cancel
+          </button>
+        )}
+      </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </form>
   );

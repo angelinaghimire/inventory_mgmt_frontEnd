@@ -3,6 +3,7 @@
     flex-direction: row;
     align-items: center;
     margin-bottom: 10px;
+    margin-top: solid 1px;
 }
 
 label {
@@ -44,7 +45,8 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: solid 3px #637899;
+    border-top: solid 1.5px #000;
+    /* border: solid 3px #637899; */
     /* background-color: #F7F9FF; */
     width: 60%;
     padding-top: 20px;
@@ -55,4 +57,10 @@ form {
 
 .submitbtn {
     margin-top: 1rem;
+}
+
+.form-container {
+    /* height: 400px; */
+    /* Adjust the height according to your needs */
+    overflow: visible;
 }

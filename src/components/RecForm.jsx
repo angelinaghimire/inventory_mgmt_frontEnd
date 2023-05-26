@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../axiosConfig.js";
 import "../stylesheets/SupForm.css";
 
-function RecForm() {
+function RecForm({ receiver }) {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrors, setShowErrors] = useState(false);
+
+  useEffect(() => {
+    if (receiver) {
+      setName(receiver.name);
+      setLocation(receiver.location);
+      setPhoneNumber(receiver.phonenumber);
+      setEmail(receiver.email);
+    }
+  }, [receiver]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,16 +29,16 @@ function RecForm() {
     }
 
     try {
-      // Check if supplier already exists in the database
+      // Check if receiver already exists in the database
       console.log(name);
       const response = await axios.get(`/api/receivers/${name}`);
-      const receiver = response.data;
-      if (receiver > 0) {
-        setErrorMessage("receiver already exists in the database.");
+      const existingReceiver = response.data;
+      if (existingReceiver > 0) {
+        setErrorMessage("Receiver already exists in the database.");
         return;
       }
 
-      // Submit supplier to the database
+      // Submit receiver to the database
       await axios.post("/api/receivers", {
         name,
         address: location,
@@ -58,7 +67,7 @@ function RecForm() {
           Name<span className="required">*</span>
         </label>
         <input
-          class="shadow"
+          className="shadow"
           type="text"
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -71,7 +80,7 @@ function RecForm() {
       <div className="form-group">
         <label>Location</label>
         <input
-          class="shadow"
+          className="shadow"
           type="text"
           value={location}
           onChange={(event) => setLocation(event.target.value)}
@@ -82,8 +91,8 @@ function RecForm() {
           Phone Number<span className="required">*</span>
         </label>
         <input
-          class="shadow"
-          type="tel"
+          className="shadow"
+          type="number"
           value={phoneNumber}
           onChange={(event) => setPhoneNumber(event.target.value)}
           required
@@ -97,7 +106,7 @@ function RecForm() {
       <div className="form-group">
         <label>Email</label>
         <input
-          class="shadow"
+          className="shadow"
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}

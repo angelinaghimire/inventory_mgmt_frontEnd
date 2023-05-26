@@ -7,7 +7,7 @@ export const Header = () => {
     <div className="header">
       <Link to="/Dashboard">
         <h1 className="title">
-          Dhulikhel Municipality Office
+          Dhulikhel District Administrator's Office
           <br />
           <h3>Inventory Management System</h3>
         </h1>

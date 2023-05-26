@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "../stylesheets/EditSup.css";
+import SupForm from "./SupForm";
 
-const EditSup = (props) => {
-  const data = [
+const EditSup = () => {
+  const initialData = [
     {
       id: 1,
       name: "John",
@@ -36,11 +37,12 @@ const EditSup = (props) => {
   ];
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState(data);
+  const [searchResults, setSearchResults] = useState(initialData);
+  const [editData, setEditData] = useState(null);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    const filteredResults = data.filter((item) =>
+    const filteredResults = initialData.filter((item) =>
       item.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
     setSearchResults(filteredResults);
@@ -51,15 +53,31 @@ const EditSup = (props) => {
     setSearchResults(updatedResults);
   };
 
+  const handleEdit = (id) => {
+    const selectedData = searchResults.find((item) => item.id === id);
+    setEditData(selectedData);
+  };
+
+  const handleFormClose = () => {
+    setEditData(null);
+  };
+
   return (
     <div className="table-wrapper">
-      <input
-        type="text"
-        placeholder="Search by name"
-        value={searchTerm}
-        onChange={handleSearch}
-      />
-      <table>
+      {editData ? (
+        <SupForm
+          editData={editData}
+          handleClose={handleFormClose}
+        />
+      ) : (
+        <>
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -82,8 +100,8 @@ const EditSup = (props) => {
                 <FontAwesomeIcon
                   className="edit"
                   icon={faEdit}
-                  onClick={() => handleDelete(item.id)}
-                />
+                      onClick={() => handleEdit(item.id)}
+                    />
                 <FontAwesomeIcon
                   className="trash"
                   icon={faTrash}
@@ -94,6 +112,8 @@ const EditSup = (props) => {
           ))}
         </tbody>
       </table>
+        </>
+      )}
     </div>
   );
 };
