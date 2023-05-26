@@ -18,14 +18,13 @@ th {
 }
 
 .table-wrapper {
-  max-height: 400px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  /* max-height: 400px; */
+  overflow: visible;
   position: relative;
   width: 80%;
   margin: 0 auto;
-  border: solid 3px #637899;
   margin-bottom: 10px;
+  border-top: solid 1.5px #000;
 }
 
 thead {
@@ -69,21 +68,23 @@ button {
 }
 
 .icon-button {
-  background: red;
+  background: #eee;
   border: none;
   cursor: pointer;
   padding: 3px;
   margin: 0;
-  color: none;
+  color: red;
+  border: solid 1px gray;
 }
 
 .tick-button {
-  background: green;
+  background: #eee;
   border: none;
   cursor: pointer;
   padding: 3px;
-  margin-right: 5px;
-  color: none;
+  margin-right: 10px;
+  border: solid 1px gray;
+  color: green;
 }
 
 .icon-button:focus {
@@ -94,4 +95,16 @@ button {
   width: 16px;
   height: 16px;
   vertical-align: middle;
+}
+
+.admin-button {
+  color: black;
+  background-color: none;
+  border: solid 1px gray;
+  cursor: pointer;
+  padding: 3px;
+  margin: 0;
+  color: none;
+  margin-right: 10px;
+  margin-left: 10px;
 }

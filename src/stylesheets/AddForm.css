@@ -4,6 +4,7 @@
     align-items: center;
     margin-bottom: 10px;
     width: 30rem;
+    overflow: visible;
 }
 
 label {
@@ -47,7 +48,7 @@ textarea,
 }
 
 button[type='submit'],
-.addbtn {
+.addbtn,.cancelbtn {
     color: #0B2447;
     background-color: #fff;
     padding: 0.5rem 1rem;
@@ -61,7 +62,7 @@ button[type='submit'],
 }
 
 button[type='submit']:hover,
-.addbtn:hover {
+.addbtn:hover, .cancelbtn:hover{
     color: #fff;
     background-color: #0B2447;
     transition-duration: 0.15s;
