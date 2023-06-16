@@ -21,7 +21,7 @@ const EditProducts = (props) => {
     {
       id: 3,
       category: "Device",
-      name: "ass",
+      name: "mobile",
       threshold: "1",
     },
     // ... rest of the data objects
