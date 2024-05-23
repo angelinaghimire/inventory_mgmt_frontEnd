@@ -1,0 +1,139 @@
+// create database in same order to avoid errors
+
+////////category
+
+CREATE TABLE `category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `dangerous` smallint(6) DEFAULT NULL,
+  `liquid` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+////////users
+
+CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('user','admin','superadmin') NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+
+////////supplier
+
+CREATE TABLE `supplier` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+////////receiver
+
+CREATE TABLE `receiver` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+////////product
+
+CREATE TABLE `product` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `category_id` int(10) unsigned NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `quantity` int(10) unsigned NOT NULL,
+  `threshold` decimal(10,2) DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `user_id` (`user_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `product_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `product_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+////////intransaction
+
+CREATE TABLE `intransaction` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL,
+  `supplier_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `supplier_id` (`supplier_id`),
+  CONSTRAINT `intransaction_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `intransaction_ibfk_3` FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+////////outtransaction
+
+CREATE TABLE `outtransaction` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL,
+  `receiver_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `receiver_id` (`receiver_id`),
+  CONSTRAINT `outtransaction_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `outtransaction_ibfk_3` FOREIGN KEY (`receiver_id`) REFERENCES `receiver` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+////////intratransactionitem
+
+CREATE TABLE `intransactionitem` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `intransaction_id` int(10) NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
+  `quantity` decimal(10,2) NOT NULL,
+  `unit` varchar(10) NOT NULL,
+  `unit_price` decimal(10,2) DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `intransaction_id` (`intransaction_id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `intransactionitem_ibfk_20` FOREIGN KEY (`intransaction_id`) REFERENCES `intransaction` (`id`),
+  CONSTRAINT `intransactionitem_ibfk_30` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+////////outtransactionitem
+
+CREATE TABLE `outtransactionitem` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `outtransaction_id` int(10) NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
+  `quantity` decimal(10,2) NOT NULL,
+  `unit` varchar(10) NOT NULL,
+  `unit_price` decimal(10,2) DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `outtransaction_id` (`outtransaction_id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `outtransactionitem_ibfk_20` FOREIGN KEY (`outtransaction_id`) REFERENCES `outtransaction` (`id`),
+  CONSTRAINT `outtransactionitem_ibfk_30` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
